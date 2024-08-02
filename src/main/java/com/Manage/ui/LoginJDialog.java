@@ -18,7 +18,7 @@ public class LoginJDialog extends javax.swing.JDialog {
   void checkTaiKhoan(){
        String username = txtUsername.getText();
        String password = txtPass.getText();
-       TaiKhoan tk = dao.selectById(username);
+       TaiKhoan tk = dao.selectByUsername(username);
        if(tk == null){
            MsgBox.alert(this, "Bạn chưa điền thông tin!");
        } else {
@@ -77,7 +77,7 @@ public class LoginJDialog extends javax.swing.JDialog {
 
         txtUsername.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         txtUsername.setForeground(new java.awt.Color(255, 204, 102));
-        txtUsername.setText("tuyen");
+        txtUsername.setText("hien");
         txtUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUsernameActionPerformed(evt);
