@@ -1,4 +1,5 @@
 package com.Manage.ui;
+
 import com.Manage.dao.NhanVienDAO;
 import com.Manage.dao.TaiKhoanDAO_1;
 import com.Manage.entity.TaiKhoan;
@@ -7,42 +8,44 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import com.Manage.utils.Auth;
 
-
 public class ThongTinNhanVen extends javax.swing.JFrame {
+
     ArrayList<NhanVien> dskh = new ArrayList<>();
     ArrayList<TaiKhoan> dstk = new ArrayList<>();
     int vitri = 0;
-    NhanVien kh = new NhanVien();
+    NhanVien nv = new NhanVien();
     TaiKhoan tk = new TaiKhoan();
-    NhanVienDAO Khdao;
-    TaiKhoanDAO_1 tkDao =new TaiKhoanDAO_1();
+    NhanVienDAO nhanVienDao = new NhanVienDAO();
+    TaiKhoanDAO_1 tkDao = new TaiKhoanDAO_1();
 
     public ThongTinNhanVen() {
         initComponents();
         setLocationRelativeTo(null);
         ShowDetail();
     }
+
     void ShowDetail() {
-          NhanVien kh = Khdao.selectById(String.valueOf(Auth.user.getIdKH()));
-            txtIdKh.setText(String.valueOf(kh.getIdNv()));
-            txtTenKH.setText(kh.getTenNv());
-            txtsdtKH.setText(kh.getDienThoai());
-            txtEmailKH.setText(kh.getEmail());
-            txtDiaChiKH.setText(kh.getDiaChi());
-            rdoNam.setSelected(kh.getGioiTinh().equalsIgnoreCase("Nam"));
-            rdoNu.setSelected(kh.getGioiTinh().equalsIgnoreCase("Nư"));
-            rdoKhac.setSelected(kh.getGioiTinh().equalsIgnoreCase("Khac"));
-            
-            TaiKhoan tk = tkDao.selectById(String.valueOf(kh.getIdNv()));
-            if (tk != null) {
-                 txtUser.setText(tk.getUsername());
-                txtpass.setText(tk.getMatkhau());
-                buttonGroup1.clearSelection();
-            } else {
-              txtUser.setText("");
-              txtpass.setText("");
-            }
+        NhanVien nv = nhanVienDao.selectById(String.valueOf(Auth.user.getIdNV()));
+        txtIdKh.setText(String.valueOf(nv.getIdNv()));
+        txtTenKH.setText(nv.getTenNv());
+        txtsdtKH.setText(nv.getDienThoai());
+        txtEmailKH.setText(nv.getEmail());
+        txtDiaChiKH.setText(nv.getDiaChi());
+        rdoNam.setSelected(nv.getGioiTinh().equalsIgnoreCase("Nam"));
+        rdoNu.setSelected(nv.getGioiTinh().equalsIgnoreCase("Nư"));
+        rdoKhac.setSelected(nv.getGioiTinh().equalsIgnoreCase("Khac"));
+
+        TaiKhoan tk = tkDao.selectById(String.valueOf(nv.getIdNv()));
+        if (tk != null) {
+            txtUser.setText(tk.getUsername());
+            txtpass.setText(tk.getMatkhau());
+            buttonGroup1.clearSelection();
+        } else {
+            txtUser.setText("");
+            txtpass.setText("");
+        }
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

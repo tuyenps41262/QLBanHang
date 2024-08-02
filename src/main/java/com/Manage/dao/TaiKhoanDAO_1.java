@@ -1,5 +1,5 @@
-
 package com.Manage.dao;
+
 import com.Manage.entity.TaiKhoan;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,24 +11,31 @@ import java.util.List;
 import com.Manage.utils.MsgBox;
 
 public class TaiKhoanDAO_1 extends HomeDAO<TaiKhoan, String> {
+
     String INSERT_SQL = "INSERT INTO TaiKhoan(username, matkhau, vaitro, trangthai, IDNV, IDKH) values (?,?,?,?,?,?) ";
     String SELECT_ALL = "SELECT * FROM TaiKhoan";
     String SELECT_ALL_BYID = "SELECT * FROM TaiKhoan WHERE username = ?";
-    
+
     private String username;
-     
+
     @Override
     public List<TaiKhoan> selectAll() {
         return this.selectBySQL(SELECT_ALL);
     }
-    
-    public TaiKhoan selectById(String username){
-        String sql="SELECT * FROM TaiKhoan WHERE username=?";
+
+    public TaiKhoan selectByUsername(String username) {
+        String sql = "SELECT * FROM TaiKhoan WHERE username = ?";
         List<TaiKhoan> list = this.selectBySQL(sql, username);
         return list.size() > 0 ? list.get(0) : null;
     }
     
-      public boolean checkLogin(String username, String MatKhau) {
+        public TaiKhoan selectById(String id) {
+        String sql = "SELECT * FROM TaiKhoan WHERE idnv = ?";
+        List<TaiKhoan> list = this.selectBySQL(sql, id);
+        return list.size() > 0 ? list.get(0) : null;
+    }
+
+    public boolean checkLogin(String username, String MatKhau) {
         List<TaiKhoan> users = getUserByID(username);
         for (TaiKhoan user : users) {
             if (user.getMatkhau().equals(MatKhau)) {
@@ -36,10 +43,9 @@ public class TaiKhoanDAO_1 extends HomeDAO<TaiKhoan, String> {
             }
         }
         return false;
-    } 
-  
+    }
 
-     public List<TaiKhoan> getUserByID(String HoTen) {
+    public List<TaiKhoan> getUserByID(String HoTen) {
         List<TaiKhoan> users = new ArrayList<>();
         PreparedStatement sttm = null;
         ResultSet rs = null;
@@ -76,15 +82,16 @@ public class TaiKhoanDAO_1 extends HomeDAO<TaiKhoan, String> {
         }
         return users;
     }
+
     @Override
     protected List<TaiKhoan> selectBySQL(String sql, Object... args) {
-       List<TaiKhoan> list=new ArrayList<>();
+        List<TaiKhoan> list = new ArrayList<>();
         try {
             ResultSet rs = null;
             try {
                 rs = JdbcHelper.query(sql, args);
-                while(rs.next()){
-                    TaiKhoan entity=new TaiKhoan();
+                while (rs.next()) {
+                    TaiKhoan entity = new TaiKhoan();
                     entity.setUsername(rs.getString("username"));
                     entity.setMatkhau(rs.getString("matkhau"));
                     entity.setVaitro(rs.getString("VaiTro"));
@@ -93,20 +100,20 @@ public class TaiKhoanDAO_1 extends HomeDAO<TaiKhoan, String> {
                     entity.setIdKH(rs.getInt("IdKH"));
                     list.add(entity);
                 }
-            } 
-            finally{
-                if(rs != null)
+            } finally {
+                if (rs != null) {
                     rs.getStatement().getConnection().close();
+                }
             }
-        } 
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
             throw new RuntimeException(ex);
         }
         return list;
     }
-        public void insert(TaiKhoan tk) {
-            JdbcHelper.update(INSERT_SQL, tk.getMatkhau(), tk.getUsername());
+
+    public void insert(TaiKhoan tk) {
+        JdbcHelper.update(INSERT_SQL, tk.getMatkhau(), tk.getUsername());
     }
 
     public void update(TaiKhoan entity) {
