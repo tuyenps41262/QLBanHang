@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class JdbcHelper {
     private static String driver="com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private static String url = "jdbc:sqlserver://localhost:1433;databaseName=QLBanHang;encrypt=true;trustServerCertificate=true;";
+    private static String url = "jdbc:sqlserver://localhost:1433;databaseName=QLBanHang_DUAN1;encrypt=true;trustServerCertificate=true;";
     private static String username = "sa";
     private static String password = "123456";
     static{

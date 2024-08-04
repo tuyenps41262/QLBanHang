@@ -83,5 +83,9 @@ public class HoaDonDAO  extends HomeDAO<HoaDon, String>{
     public HoaDon selectById(String key) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+    public List<HoaDon> selectById1(String id) {
+         return this.selectBySQL(SELECT_ALL_BYID, id);
+        
+    }
     
 }

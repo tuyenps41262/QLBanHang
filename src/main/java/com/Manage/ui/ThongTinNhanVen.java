@@ -26,11 +26,11 @@ public class ThongTinNhanVen extends javax.swing.JFrame {
 
     void ShowDetail() {
         NhanVien nv = nhanVienDao.selectById(String.valueOf(Auth.user.getIdNV()));
-        txtIdKh.setText(String.valueOf(nv.getIdNv()));
-        txtTenKH.setText(nv.getTenNv());
-        txtsdtKH.setText(nv.getDienThoai());
-        txtEmailKH.setText(nv.getEmail());
-        txtDiaChiKH.setText(nv.getDiaChi());
+        txtIdNV.setText(String.valueOf(nv.getIdNv()));
+        txtTenNV.setText(nv.getTenNv());
+        txtsdtNV.setText(nv.getDienThoai());
+        txtEmailNV.setText(nv.getEmail());
+        txtDiaChiNV.setText(nv.getDiaChi());
         rdoNam.setSelected(nv.getGioiTinh().equalsIgnoreCase("Nam"));
         rdoNu.setSelected(nv.getGioiTinh().equalsIgnoreCase("Nư"));
         rdoKhac.setSelected(nv.getGioiTinh().equalsIgnoreCase("Khac"));
@@ -60,16 +60,16 @@ public class ThongTinNhanVen extends javax.swing.JFrame {
         jpnAdmin = new javax.swing.JPanel();
         jLabel23 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
-        txtTenKH = new javax.swing.JTextField();
+        txtTenNV = new javax.swing.JTextField();
         jLabel26 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
-        txtsdtKH = new javax.swing.JTextField();
+        txtsdtNV = new javax.swing.JTextField();
         jScrollPane5 = new javax.swing.JScrollPane();
-        txtDiaChiKH = new javax.swing.JTextArea();
+        txtDiaChiNV = new javax.swing.JTextArea();
         jLabel24 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
-        txtEmailKH = new javax.swing.JTextField();
-        txtIdKh = new javax.swing.JTextField();
+        txtEmailNV = new javax.swing.JTextField();
+        txtIdNV = new javax.swing.JTextField();
         rdoNam = new javax.swing.JRadioButton();
         rdoNu = new javax.swing.JRadioButton();
         rdoKhac = new javax.swing.JRadioButton();
@@ -132,16 +132,16 @@ public class ThongTinNhanVen extends javax.swing.JFrame {
 
         jLabel23.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(51, 51, 0));
-        jLabel23.setText("Tên khách hàng");
+        jLabel23.setText("Tên nhân viên");
 
         jLabel20.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(51, 51, 0));
-        jLabel20.setText("ID khách hàng");
+        jLabel20.setText("ID nhân viên");
 
-        txtTenKH.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtTenKH.addActionListener(new java.awt.event.ActionListener() {
+        txtTenNV.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtTenNV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTenKHActionPerformed(evt);
+                txtTenNVActionPerformed(evt);
             }
         });
 
@@ -153,22 +153,22 @@ public class ThongTinNhanVen extends javax.swing.JFrame {
         jLabel27.setForeground(new java.awt.Color(51, 51, 0));
         jLabel27.setText("Số điện thoại");
 
-        txtsdtKH.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtsdtKH.addActionListener(new java.awt.event.ActionListener() {
+        txtsdtNV.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtsdtNV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtsdtKHActionPerformed(evt);
+                txtsdtNVActionPerformed(evt);
             }
         });
-        txtsdtKH.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtsdtNV.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtsdtKHKeyTyped(evt);
+                txtsdtNVKeyTyped(evt);
             }
         });
 
-        txtDiaChiKH.setColumns(20);
-        txtDiaChiKH.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtDiaChiKH.setRows(5);
-        jScrollPane5.setViewportView(txtDiaChiKH);
+        txtDiaChiNV.setColumns(20);
+        txtDiaChiNV.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtDiaChiNV.setRows(5);
+        jScrollPane5.setViewportView(txtDiaChiNV);
 
         jLabel24.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(51, 51, 0));
@@ -178,17 +178,17 @@ public class ThongTinNhanVen extends javax.swing.JFrame {
         jLabel25.setForeground(new java.awt.Color(51, 51, 0));
         jLabel25.setText("Email");
 
-        txtEmailKH.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtEmailKH.addActionListener(new java.awt.event.ActionListener() {
+        txtEmailNV.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtEmailNV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtEmailKHActionPerformed(evt);
+                txtEmailNVActionPerformed(evt);
             }
         });
 
-        txtIdKh.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtIdKh.addActionListener(new java.awt.event.ActionListener() {
+        txtIdNV.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtIdNV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIdKhActionPerformed(evt);
+                txtIdNVActionPerformed(evt);
             }
         });
 
@@ -240,10 +240,10 @@ public class ThongTinNhanVen extends javax.swing.JFrame {
                                 .addComponent(rdoNu, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(rdoKhac, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtTenKH, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
-                            .addComponent(txtIdKh, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtsdtKH)
-                            .addComponent(txtEmailKH, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(txtTenNV, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+                            .addComponent(txtIdNV, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtsdtNV)
+                            .addComponent(txtEmailNV, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addGap(15, 15, 15))
         );
         jpnAdminLayout.setVerticalGroup(
@@ -252,11 +252,11 @@ public class ThongTinNhanVen extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addGroup(jpnAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel23)
-                    .addComponent(txtTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTenNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jpnAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtIdKh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtIdNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jpnAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel26)
@@ -266,11 +266,11 @@ public class ThongTinNhanVen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpnAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel27)
-                    .addComponent(txtsdtKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtsdtNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(19, 19, 19)
                 .addGroup(jpnAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel25)
-                    .addComponent(txtEmailKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEmailNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jpnAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel24)
@@ -330,27 +330,27 @@ public class ThongTinNhanVen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUserActionPerformed
 
-    private void txtTenKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenKHActionPerformed
+    private void txtTenNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenNVActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtTenKHActionPerformed
+    }//GEN-LAST:event_txtTenNVActionPerformed
 
-    private void txtsdtKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtsdtKHActionPerformed
+    private void txtsdtNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtsdtNVActionPerformed
         // TODO add your handling code here:
         //   checkSo();
-    }//GEN-LAST:event_txtsdtKHActionPerformed
+    }//GEN-LAST:event_txtsdtNVActionPerformed
 
-    private void txtsdtKHKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtsdtKHKeyTyped
+    private void txtsdtNVKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtsdtNVKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtsdtKHKeyTyped
+    }//GEN-LAST:event_txtsdtNVKeyTyped
 
-    private void txtEmailKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailKHActionPerformed
+    private void txtEmailNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailNVActionPerformed
         // TODO add your handling code here:
         //  checkEmail();
-    }//GEN-LAST:event_txtEmailKHActionPerformed
+    }//GEN-LAST:event_txtEmailNVActionPerformed
 
-    private void txtIdKhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdKhActionPerformed
+    private void txtIdNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdNVActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtIdKhActionPerformed
+    }//GEN-LAST:event_txtIdNVActionPerformed
 
     private void rdoNuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoNuActionPerformed
         // TODO add your handling code here:
@@ -418,12 +418,12 @@ public class ThongTinNhanVen extends javax.swing.JFrame {
     private javax.swing.JRadioButton rdoKhac;
     private javax.swing.JRadioButton rdoNam;
     private javax.swing.JRadioButton rdoNu;
-    private javax.swing.JTextArea txtDiaChiKH;
-    private javax.swing.JTextField txtEmailKH;
-    private javax.swing.JTextField txtIdKh;
-    private javax.swing.JTextField txtTenKH;
+    private javax.swing.JTextArea txtDiaChiNV;
+    private javax.swing.JTextField txtEmailNV;
+    private javax.swing.JTextField txtIdNV;
+    private javax.swing.JTextField txtTenNV;
     private javax.swing.JTextField txtUser;
     private javax.swing.JPasswordField txtpass;
-    private javax.swing.JTextField txtsdtKH;
+    private javax.swing.JTextField txtsdtNV;
     // End of variables declaration//GEN-END:variables
 }

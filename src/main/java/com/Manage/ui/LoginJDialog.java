@@ -33,7 +33,8 @@ public class LoginJDialog extends javax.swing.JDialog {
 //              label.value = tenDangNhap;
                JOptionPane.showMessageDialog(null, "Đăng nhập thành công!");
                this.dispose(); //dong tab 
-               new ThongTinNhanVen().setVisible(true);
+               new GioHangJDialog().setVisible(true);
+               //new ThongTinNhanVen().setVisible(true);
 //               if(tk.getVaitro().equalsIgnoreCase("admin")){
 //                   new HomeJDialog(null, true).setVisible(true);
 //               } else {
@@ -77,7 +78,7 @@ public class LoginJDialog extends javax.swing.JDialog {
 
         txtUsername.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         txtUsername.setForeground(new java.awt.Color(255, 204, 102));
-        txtUsername.setText("hien");
+        txtUsername.setText("user11");
         txtUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUsernameActionPerformed(evt);

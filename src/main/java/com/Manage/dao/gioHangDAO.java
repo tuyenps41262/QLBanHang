@@ -1,22 +1,30 @@
-
 package com.Manage.dao;
+
 import com.Manage.entity.GioHang;
+import com.Manage.entity.SanPham;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.Manage.utils.JdbcHelper;
 
-public class gioHangDAO extends HomeDAO<GioHang, String>{
+public class GioHangDAO extends HomeDAO<GioHang, String> {
+
+    String INSERT_SQL = "INSERT INTO GioHang(idsp, idkh, SoLuong) values (?,?,?) ";
+    String SELECT_ONE_SQL = "SELECT * FROM GioHang WHERE Idsp = ? AND IdKH = ?";
+    String UPDATE_SQL = "UPDATE GioHang set SoLuong = ? where Idsp = ? AND IdKH = ?";
+    String DELETE_SQL = "DELETE FROM GioHang WHERE Idsp = ? AND IdKH = ? ";
+    String SELECT_ALL_BY_IDKH = "SELECT sp.TenSP, gh.SoLuong FROM GioHang gh  LEFT JOIN SanPham sp  ON gh.IdSP = sp.IdSP  WHERE IdKH = ?";
+    String CHECK_EXIST_SQL = "SELECT COUNT (*) as dem FROM GioHang WHERE Idsp = ? AND IdKH = ?";
 
     @Override
     public void insert(GioHang entity) {
-       
+        JdbcHelper.update(INSERT_SQL, entity.getIdSP(), entity.getIdKH(), entity.getSoLuong());
     }
 
     @Override
     public void update(GioHang entity) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        JdbcHelper.update(UPDATE_SQL, entity.getSoLuong(), entity.getIdSP(), entity.getIdKH());
     }
 
     @Override
@@ -29,42 +37,89 @@ public class gioHangDAO extends HomeDAO<GioHang, String>{
         return this.selectBySQL("select * from GioHang");
     }
 
-    @Override
-   // public GioHang selectById(String key) {
-//        List<GioHang> list = new ArrayList<GioHang>();
-//         try {
-//            ResultSet rs = null;
-//            try {
-//                rs = JdbcHelper.query(sql, args);
-//                while(rs.next()){
-//                    GioHang sp = new GioHang();
-//                        sp.setIdKH(rs.getInt("IdSP"));
-//                        sp.setIdSP(rs.getInt("IdSP"));
-//                        sp.setTenSp(rs.getString("TenSP"));
-//                        sp.setSoLuong(rs.getInt("SoLuong"));
-//                        sp.setMoTa(rs.getString("MoTa"));
-//                        sp.setGiaBan(rs.getFloat("GiaBan"));
-//                        sp.setLoaiSp(rs.getString("LoaiSp"));
-//                    list.add(sp);
-//                }
-//                
-//            } finally {
-//                rs.getStatement().getConnection().close();
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return list;   
- //   }
+    public List<GioHang> getAllByIdKH(int idKH) {
+        List<GioHang> list = new ArrayList<GioHang>();
+        try {
+            ResultSet rs = null;
+            try {
+                rs = JdbcHelper.query(SELECT_ALL_BY_IDKH, idKH);
+                while (rs.next()) {
+                    GioHang gioHang = new GioHang();
+//                    gioHang.setIdSP(rs.getString("idSP"));
+//                    gioHang.setIdKH(rs.getInt("idKH"));
+                    gioHang.setSoLuong(rs.getInt("soLuong"));
+                    gioHang.setTenSP(rs.getString("TenSP"));
+                    list.add(gioHang);
+                }
 
-  //  @Override
+            } finally {
+                rs.getStatement().getConnection().close();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+    //  @Override
     protected List<GioHang> selectBySQL(String sql, Object... args) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public GioHang getOneById(String idSP, int idKH) {
+        try {
+            ResultSet rs = null;
+            try {
+                rs = JdbcHelper.query(SELECT_ONE_SQL, idSP, idKH);
+                while (rs.next()) {
+                    GioHang gioHang = new GioHang();
+                    gioHang.setIdSP(rs.getString("idSP"));
+                    gioHang.setIdKH(rs.getInt("idKH"));
+                    gioHang.setSoLuong(rs.getInt("soLuong"));
+                    return gioHang;
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                rs.getStatement().getConnection().close();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
+    public void sp_InsertCart(String tenSp, int soluong) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public boolean isExist(GioHang entity) {
+        try {
+            ResultSet rs = null;
+            try {
+                rs = JdbcHelper.query(CHECK_EXIST_SQL, entity.getIdSP(), entity.getIdKH());
+                while (rs.next()) {
+                    int dem = rs.getInt("dem");
+                    if (dem > 0) {
+                        return true;
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                rs.getStatement().getConnection().close();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return false;
     }
 
     @Override
     public GioHang selectById(String key) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
 }

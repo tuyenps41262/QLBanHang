@@ -5,6 +5,7 @@ public class GioHang {
     private int soLuong;
     private int idKH;
     private String idSP;
+    private String tenSP;
 
     public GioHang() {
     }
@@ -38,4 +39,13 @@ public class GioHang {
     public void setIdSP(String idSP) {
         this.idSP = idSP;
     }
+
+    public String getTenSP() {
+        return tenSP;
+    }
+
+    public void setTenSP(String tenSP) {
+        this.tenSP = tenSP;
+    }
+    
 }

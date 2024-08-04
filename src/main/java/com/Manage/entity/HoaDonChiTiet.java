@@ -3,7 +3,7 @@ package com.Manage.entity;
 
 public class HoaDonChiTiet {
     private int soLuong;
-    private float giaBan;
+    private double giaBan;
     private String idHD;
     private String idSP;
 
@@ -25,11 +25,11 @@ public class HoaDonChiTiet {
         this.soLuong = soLuong;
     }
 
-    public float getGiaBan() {
+    public double getGiaBan() {
         return giaBan;
     }
 
-    public void setGiaBan(float giaBan) {
+    public void setGiaBan(double giaBan) {
         this.giaBan = giaBan;
     }
 
@@ -48,4 +48,6 @@ public class HoaDonChiTiet {
     public void setIdSP(String idSP) {
         this.idSP = idSP;
     }
+
+    
 }
