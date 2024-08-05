@@ -13,9 +13,9 @@ public class GioHangDAO extends HomeDAO<GioHang, String> {
     String INSERT_SQL = "INSERT INTO GioHang(idsp, idkh, SoLuong) values (?,?,?) ";
     String SELECT_ONE_SQL = "SELECT * FROM GioHang WHERE Idsp = ? AND IdKH = ?";
     String UPDATE_SQL = "UPDATE GioHang set SoLuong = ? where Idsp = ? AND IdKH = ?";
-    String DELETE_SQL = "DELETE FROM GioHang WHERE Idsp = ? AND IdKH = ? ";
-    String SELECT_ALL_BY_IDKH = "SELECT sp.TenSP, gh.SoLuong FROM GioHang gh  LEFT JOIN SanPham sp  ON gh.IdSP = sp.IdSP  WHERE IdKH = ?";
+    String SELECT_ALL_BY_IDKH = "SELECT gh.IdSP, sp.TenSP, gh.SoLuong FROM GioHang gh LEFT JOIN SanPham sp ON gh.IdSP = sp.IdSP WHERE IdKH = ?";
     String CHECK_EXIST_SQL = "SELECT COUNT (*) as dem FROM GioHang WHERE Idsp = ? AND IdKH = ?";
+    String DELETE_SQL = "DELETE GioHang WHERE IdSP = ? and IdKH = ?";
 
     @Override
     public void insert(GioHang entity) {
@@ -29,7 +29,6 @@ public class GioHangDAO extends HomeDAO<GioHang, String> {
 
     @Override
     public void delete(String key) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
@@ -45,7 +44,7 @@ public class GioHangDAO extends HomeDAO<GioHang, String> {
                 rs = JdbcHelper.query(SELECT_ALL_BY_IDKH, idKH);
                 while (rs.next()) {
                     GioHang gioHang = new GioHang();
-//                    gioHang.setIdSP(rs.getString("idSP"));
+                    gioHang.setIdSP(rs.getString("idSP"));
 //                    gioHang.setIdKH(rs.getInt("idKH"));
                     gioHang.setSoLuong(rs.getInt("soLuong"));
                     gioHang.setTenSP(rs.getString("TenSP"));
@@ -88,6 +87,11 @@ public class GioHangDAO extends HomeDAO<GioHang, String> {
         }
 
         return null;
+    }
+    
+    public boolean delete(String idSP, int idKH) {
+        int result = JdbcHelper.update(DELETE_SQL, idSP, idKH);
+        return result > 0;
     }
 
     public void sp_InsertCart(String tenSp, int soluong) {

@@ -11,6 +11,7 @@ import com.Manage.entity.HoaDonChiTiet;
 import com.Manage.entity.SanPham;
 import com.Manage.entity.khachHang;
 import com.Manage.utils.Auth;
+import com.Manage.utils.MsgBox;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,11 +57,11 @@ public class GioHangJDialog extends javax.swing.JFrame {
     }
 
     void fillToCart() {
-        String[] headers = {"TenSP", "SoLuong"};
+        String[] headers = {"ID", "TenSP", "SoLuong"};
         DefaultTableModel model = new DefaultTableModel(headers, 0);
         List<GioHang> dsGioHang = ghdao.getAllByIdKH(Auth.user.getIdKH());
         for (GioHang gh : dsGioHang) {
-            Object[] row = {gh.getTenSP(), gh.getSoLuong()};
+            Object[] row = {gh.getIdSP(), gh.getTenSP(), gh.getSoLuong()};
             model.addRow(row);
         }
         tblCart.setModel(model);
@@ -130,7 +131,7 @@ public class GioHangJDialog extends javax.swing.JFrame {
         txtSoluong = new javax.swing.JTextField();
         btnAddCart = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnXoaSP = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtTongTien = new javax.swing.JLabel();
@@ -234,11 +235,11 @@ public class GioHangJDialog extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Tên sản phẩm", "Số lượng"
+                "Mã sản phẩm", "Tên sản phẩm", "Số lượng"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -293,10 +294,10 @@ public class GioHangJDialog extends javax.swing.JFrame {
 
         jButton2.setText("Sửa Số Lượng ");
 
-        jButton3.setText("Xoá Sản Phẩm Khỏi Đơn");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnXoaSP.setText("Xoá Sản Phẩm Khỏi Giỏ Hàng");
+        btnXoaSP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnXoaSPActionPerformed(evt);
             }
         });
 
@@ -338,7 +339,7 @@ public class GioHangJDialog extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jButton2)
                                 .addGap(32, 32, 32)
-                                .addComponent(jButton3)
+                                .addComponent(btnXoaSP)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton4))))
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -365,7 +366,7 @@ public class GioHangJDialog extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
-                    .addComponent(jButton3)
+                    .addComponent(btnXoaSP)
                     .addComponent(jButton4)
                     .addComponent(jLabel4)
                     .addComponent(txtSoluong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -427,11 +428,22 @@ public class GioHangJDialog extends javax.swing.JFrame {
         //txtTongTien.setText("0");
     }//GEN-LAST:event_btnAddCartActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-//        xoasp();
-//        loadSauXoa();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void btnXoaSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaSPActionPerformed
+        int row = tblCart.getSelectedRow();
+        if (row == - 1) {
+            MsgBox.alert(this, "Vui lòng chọn sản phẩm cần xóa");
+        } else {
+            int confirm = JOptionPane.showConfirmDialog(GioHangJDialog.this, "Bạn chắc chắn muốn xóa không ?");
+            
+            if (confirm == JOptionPane.YES_OPTION) {
+                String idSP = String.valueOf(tblCart.getValueAt(row, 0));
+                int idKH = Auth.user.getIdKH();
+                
+                ghdao.delete(idSP, idKH);
+                fillToCart();
+            }
+        }
+    }//GEN-LAST:event_btnXoaSPActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
@@ -477,8 +489,8 @@ public class GioHangJDialog extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddCart;
+    private javax.swing.JButton btnXoaSP;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -496,4 +508,8 @@ public class GioHangJDialog extends javax.swing.JFrame {
     private javax.swing.JTextField txtTimKiem;
     private javax.swing.JLabel txtTongTien;
     // End of variables declaration//GEN-END:variables
+
+    private int MsgBox(GioHangJDialog aThis, String bạn_chắc_chắn_muốn_xóa) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
