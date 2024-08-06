@@ -1,19 +1,22 @@
-
 package com.Manage.entity;
 
 public class GioHang {
-    private int soLuong;
+
     private int idKH;
     private String idSP;
     private String tenSP;
+    private double giaBan;
+    private int soLuong;
 
     public GioHang() {
     }
 
-    public GioHang(int soLuong, int idKH, String idSP) {
+    public GioHang(int soLuong, int idKH, String idSP, String tenSP, double giaBan) {
         this.soLuong = soLuong;
         this.idKH = idKH;
         this.idSP = idSP;
+        this.tenSP = tenSP;
+        this.giaBan = giaBan;
     }
 
     public int getSoLuong() {
@@ -47,5 +50,14 @@ public class GioHang {
     public void setTenSP(String tenSP) {
         this.tenSP = tenSP;
     }
+
+    public double getGiaBan() {
+        return giaBan;
+    }
+
+    public void setGiaBan(double giaBan) {
+        this.giaBan = giaBan;
+    }
+
     
 }

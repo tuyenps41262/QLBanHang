@@ -25,19 +25,12 @@ public class GioHangJDialog extends javax.swing.JFrame {
 
     DecimalFormat formatter = new DecimalFormat("###,###,###");
     SanPhamDAO spdao;
-    HoaDonDAO hddao = new HoaDonDAO();
-    SanPham sp;
-    List<SanPham> dssp;
-    List<HoaDon> dshd;
-    int vitri = 0;
-    int row = 0;
-    HoaDon hd = new HoaDon();
-    HoaDonChiTietDAO hdctdao = new HoaDonChiTietDAO();
-    GioHangDAO ghdao = new GioHangDAO();
+    GioHangDAO ghdao;
 
     public GioHangJDialog() {
         initComponents();
         spdao = new SanPhamDAO();
+        ghdao = new GioHangDAO();
         fillToSanPham();
         fillToCart();
     }
@@ -52,25 +45,18 @@ public class GioHangJDialog extends javax.swing.JFrame {
         }
         tblSanPham.setModel(model);
 
-//        ListSelectionModel listSelectionModel = tblSanPham.getSelectionModel();
-//        listSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     void fillToCart() {
-        String[] headers = {"ID", "TenSP", "SoLuong"};
+        String[] headers = {"ID", "TenSP", "GiaBan", "SoLuong"};
         DefaultTableModel model = new DefaultTableModel(headers, 0);
         List<GioHang> dsGioHang = ghdao.getAllByIdKH(Auth.user.getIdKH());
         for (GioHang gh : dsGioHang) {
-            Object[] row = {gh.getIdSP(), gh.getTenSP(), gh.getSoLuong()};
+            Object[] row = {gh.getIdSP(), gh.getTenSP(), gh.getGiaBan(), gh.getSoLuong()};
             model.addRow(row);
         }
         tblCart.setModel(model);
-
-//        ListSelectionModel listSelectionModel = tblSanPham.getSelectionModel();
-//        listSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
-
-    String flag = "";
 
     public void loadDataTogiohang() {
         // validate so luong
@@ -87,13 +73,6 @@ public class GioHangJDialog extends javax.swing.JFrame {
         }
 
         String idSp = String.valueOf(tblSanPham.getValueAt(tblSanPham.getSelectedRow(), 0));
-        String tenSp = String.valueOf(tblSanPham.getValueAt(tblSanPham.getSelectedRow(), 1));
-        //String hinh = String.valueOf(tblSanPham.getValueAt(tblSanPham.getSelectedRow(), 2));
-
-//        DefaultTableModel defaultTableModelCart = (DefaultTableModel) this.tblCart.getModel();
-//        defaultTableModelCart.addRow(new Object[]{
-//            tenSp, soluong
-//        });
         GioHang gioHang = ghdao.getOneById(idSp, Auth.user.getIdKH());
 
         GioHang updateGioHang = new GioHang();
@@ -130,9 +109,9 @@ public class GioHangJDialog extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         txtSoluong = new javax.swing.JTextField();
         btnAddCart = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnSua = new javax.swing.JButton();
         btnXoaSP = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnDatHang = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtTongTien = new javax.swing.JLabel();
 
@@ -235,11 +214,11 @@ public class GioHangJDialog extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã sản phẩm", "Tên sản phẩm", "Số lượng"
+                "Mã sản phẩm", "Tên sản phẩm", "Đơn giá", "Số lượng"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -292,7 +271,12 @@ public class GioHangJDialog extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Sửa Số Lượng ");
+        btnSua.setText("Sửa Số Lượng ");
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
 
         btnXoaSP.setText("Xoá Sản Phẩm Khỏi Giỏ Hàng");
         btnXoaSP.addActionListener(new java.awt.event.ActionListener() {
@@ -301,10 +285,10 @@ public class GioHangJDialog extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("Thanh Toán");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnDatHang.setText("Đặt hàng");
+        btnDatHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnDatHangActionPerformed(evt);
             }
         });
 
@@ -337,11 +321,11 @@ public class GioHangJDialog extends javax.swing.JFrame {
                                 .addGap(6, 6, 6)
                                 .addComponent(txtTongTien))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton2)
+                                .addComponent(btnSua)
                                 .addGap(32, 32, 32)
                                 .addComponent(btnXoaSP)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton4))))
+                                .addComponent(btnDatHang))))
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -365,9 +349,9 @@ public class GioHangJDialog extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
+                    .addComponent(btnSua)
                     .addComponent(btnXoaSP)
-                    .addComponent(jButton4)
+                    .addComponent(btnDatHang)
                     .addComponent(jLabel4)
                     .addComponent(txtSoluong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAddCart))
@@ -434,20 +418,35 @@ public class GioHangJDialog extends javax.swing.JFrame {
             MsgBox.alert(this, "Vui lòng chọn sản phẩm cần xóa");
         } else {
             int confirm = JOptionPane.showConfirmDialog(GioHangJDialog.this, "Bạn chắc chắn muốn xóa không ?");
-            
+
             if (confirm == JOptionPane.YES_OPTION) {
                 String idSP = String.valueOf(tblCart.getValueAt(row, 0));
                 int idKH = Auth.user.getIdKH();
-                
                 ghdao.delete(idSP, idKH);
                 fillToCart();
             }
         }
     }//GEN-LAST:event_btnXoaSPActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void btnDatHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDatHangActionPerformed
+        new DatHangFrame().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnDatHangActionPerformed
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        int row = tblCart.getSelectedRow();
+        if (row == - 1) {
+            MsgBox.alert(this, "Vui lòng chọn sản phẩm cần sửa số lượng");
+        } else {
+            int soLuong = Integer.parseInt(String.valueOf(tblCart.getValueAt(row, 3)));
+            String idSP = String.valueOf(tblCart.getValueAt(row, 0));
+            int idKH = Auth.user.getIdKH();
+
+            new SuaSoLuongSPGioHangFrame(soLuong, idSP, idKH).setVisible(true);
+            this.dispose();
+        }
+
+    }//GEN-LAST:event_btnSuaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -489,9 +488,9 @@ public class GioHangJDialog extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddCart;
+    private javax.swing.JButton btnDatHang;
+    private javax.swing.JButton btnSua;
     private javax.swing.JButton btnXoaSP;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -509,7 +508,4 @@ public class GioHangJDialog extends javax.swing.JFrame {
     private javax.swing.JLabel txtTongTien;
     // End of variables declaration//GEN-END:variables
 
-    private int MsgBox(GioHangJDialog aThis, String bạn_chắc_chắn_muốn_xóa) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }
