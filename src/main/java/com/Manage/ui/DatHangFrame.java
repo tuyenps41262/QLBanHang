@@ -5,10 +5,15 @@
 package com.Manage.ui;
 
 import com.Manage.dao.GioHangDAO;
+import com.Manage.dao.HoaDonDAO;
 import com.Manage.entity.GioHang;
+import com.Manage.entity.HoaDon;
 import com.Manage.utils.Auth;
+import com.Manage.utils.XDate;
+import java.sql.Date;
 import java.text.DecimalFormat;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -18,15 +23,18 @@ import javax.swing.table.DefaultTableModel;
 public class DatHangFrame extends javax.swing.JFrame {
 
     GioHangDAO ghdao;
+    HoaDonDAO hoaDonDAO;
 
     /**
      * Creates new form DatHang
      */
     public DatHangFrame() {
         ghdao = new GioHangDAO();
+        hoaDonDAO = new HoaDonDAO();
         initComponents();
         fillToCart();
         tinhThanhTien();
+        setLocationRelativeTo(null);
 
     }
 
@@ -77,7 +85,7 @@ public class DatHangFrame extends javax.swing.JFrame {
         txtTongTien = new javax.swing.JLabel();
         btnQuayLai = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txaDiaChi = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -176,9 +184,9 @@ public class DatHangFrame extends javax.swing.JFrame {
                 .addGap(16, 16, 16))
         );
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txaDiaChi.setColumns(20);
+        txaDiaChi.setRows(5);
+        jScrollPane1.setViewportView(txaDiaChi);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -216,9 +224,7 @@ public class DatHangFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3)))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
@@ -240,7 +246,20 @@ public class DatHangFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_tblCartMouseClicked
 
     private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
-        // TODO add your handling code here:
+        int confirm = JOptionPane.showConfirmDialog(DatHangFrame.this, "Bạn xác nhận đặt hàng?");
+        if (confirm == JOptionPane.YES_OPTION) {
+            HoaDon entity = new HoaDon();
+            entity.setDiaChi(txaDiaChi.getText());
+            entity.setSoDienThoai(txtSDT.getText());
+            java.util.Date utilDate = new java.util.Date();
+            entity.setNgayLap(new Date(utilDate.getTime()));
+            entity.setIdKH(Auth.user.getIdKH());
+            entity.setTrangThaiThanhToan("Da thanh toan");
+            entity.setTenNguoiNhan(txtNguoiNhan.getText());
+            entity.setDiaChi(txaDiaChi.getText());
+            int idHD = hoaDonDAO.taoHoaDon(entity);
+            System.out.println("id hoa don: " + idHD);
+        }
     }//GEN-LAST:event_btnThanhToanActionPerformed
 
     private void btnQuayLaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuayLaiActionPerformed
@@ -259,8 +278,8 @@ public class DatHangFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTable tblCart;
+    private javax.swing.JTextArea txaDiaChi;
     private javax.swing.JTextField txtNguoiNhan;
     private javax.swing.JTextField txtSDT;
     private javax.swing.JLabel txtTongTien;

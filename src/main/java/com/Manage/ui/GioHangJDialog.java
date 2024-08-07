@@ -1,24 +1,13 @@
 package com.Manage.ui;
-
 import com.Manage.dao.GioHangDAO;
-import com.Manage.dao.HoaDonChiTietDAO;
-import com.Manage.dao.HoaDonDAO;
-import com.Manage.dao.KhachHangDAO;
 import com.Manage.dao.SanPhamDAO;
 import com.Manage.entity.GioHang;
-import com.Manage.entity.HoaDon;
-import com.Manage.entity.HoaDonChiTiet;
 import com.Manage.entity.SanPham;
-import com.Manage.entity.khachHang;
 import com.Manage.utils.Auth;
 import com.Manage.utils.MsgBox;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 public class GioHangJDialog extends javax.swing.JFrame {
@@ -33,6 +22,7 @@ public class GioHangJDialog extends javax.swing.JFrame {
         ghdao = new GioHangDAO();
         fillToSanPham();
         fillToCart();
+        setLocationRelativeTo(null);
     }
 
     void fillToSanPham() {
@@ -58,38 +48,49 @@ public class GioHangJDialog extends javax.swing.JFrame {
         tblCart.setModel(model);
     }
 
-    public void loadDataTogiohang() {
-        // validate so luong
-        int soluong;
-        try {
-            soluong = Integer.parseInt(txtSoluong.getText().trim());
-            if (soluong <= 0) {
-                JOptionPane.showMessageDialog(this, "Vui lòng nhập số lượng lớn hơn 0");
-                return;
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập số lượng ở dạng số nguyên!");
+    public void loadDataToGioHang() {
+    // Kiểm tra xem người dùng đã chọn sản phẩm chưa
+    int selectedRow = tblSanPham.getSelectedRow();
+    if (selectedRow == -1) {
+        MsgBox.alert(this, "Vui lòng chọn sản phẩm cần thêm!");
+        return;
+    }
+
+    // Lấy số lượng từ spinner
+    int soLuong;
+    try {
+        soLuong = (int) spnSoLuong.getValue();
+        if (soLuong <= 0) {
+            JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn 0!");
             return;
         }
-
-        String idSp = String.valueOf(tblSanPham.getValueAt(tblSanPham.getSelectedRow(), 0));
-        GioHang gioHang = ghdao.getOneById(idSp, Auth.user.getIdKH());
-
-        GioHang updateGioHang = new GioHang();
-        updateGioHang.setIdSP(idSp);
-        updateGioHang.setIdKH(Auth.user.getIdKH());
-        if (gioHang != null) {
-            soluong = soluong + gioHang.getSoLuong();
-        }
-        updateGioHang.setSoLuong(soluong);
-
-        if (!ghdao.isExist(updateGioHang)) {
-            ghdao.insert(updateGioHang);
-        } else {
-            ghdao.update(updateGioHang);
-        }
-        fillToCart();
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Vui lòng nhập số lượng ở dạng số nguyên!");
+        return;
     }
+
+    // Lấy thông tin sản phẩm từ bảng sản phẩm
+    String idSanPham = String.valueOf(tblSanPham.getValueAt(selectedRow, 0));
+
+    // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+    GioHang gioHang = ghdao.getOneById(idSanPham, Auth.user.getIdKH());
+    if (gioHang != null) {
+        // Cập nhật số lượng sản phẩm trong giỏ hàng
+        soLuong += gioHang.getSoLuong();
+        gioHang.setSoLuong(soLuong);
+        ghdao.update(gioHang);
+    } else {
+        // Thêm sản phẩm mới vào giỏ hàng
+        GioHang newGioHang = new GioHang();
+        newGioHang.setIdSP(idSanPham);
+        newGioHang.setIdKH(Auth.user.getIdKH());
+        newGioHang.setSoLuong(soLuong);
+        ghdao.insert(newGioHang);
+    }
+
+    // Cập nhật lại dữ liệu trong giỏ hàng
+    fillToCart();
+}
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -107,13 +108,11 @@ public class GioHangJDialog extends javax.swing.JFrame {
         tblCart = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txtSoluong = new javax.swing.JTextField();
         btnAddCart = new javax.swing.JButton();
         btnSua = new javax.swing.JButton();
         btnXoaSP = new javax.swing.JButton();
         btnDatHang = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        txtTongTien = new javax.swing.JLabel();
+        spnSoLuong = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -292,11 +291,6 @@ public class GioHangJDialog extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("TỔNG TIỀN");
-
-        txtTongTien.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        txtTongTien.setText("0 đ ");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -306,26 +300,17 @@ public class GioHangJDialog extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(30, 30, 30)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(56, 56, 56)
-                                .addComponent(txtSoluong, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(30, 30, 30)
-                                .addComponent(btnAddCart)
-                                .addGap(85, 85, 85)))
-                        .addGap(24, 24, 24)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(txtTongTien))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnSua)
-                                .addGap(32, 32, 32)
-                                .addComponent(btnXoaSP)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnDatHang))))
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(spnSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAddCart)
+                        .addGap(109, 109, 109)
+                        .addComponent(btnSua)
+                        .addGap(32, 32, 32)
+                        .addComponent(btnXoaSP)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnDatHang))
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -353,13 +338,9 @@ public class GioHangJDialog extends javax.swing.JFrame {
                     .addComponent(btnXoaSP)
                     .addComponent(btnDatHang)
                     .addComponent(jLabel4)
-                    .addComponent(txtSoluong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAddCart))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtTongTien))
-                .addContainerGap())
+                    .addComponent(btnAddCart)
+                    .addComponent(spnSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -407,7 +388,7 @@ public class GioHangJDialog extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddCartMouseClicked
 
     private void btnAddCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCartActionPerformed
-        loadDataTogiohang();
+        loadDataToGioHang();
 
         //txtTongTien.setText("0");
     }//GEN-LAST:event_btnAddCartActionPerformed
@@ -443,8 +424,8 @@ public class GioHangJDialog extends javax.swing.JFrame {
             int idKH = Auth.user.getIdKH();
 
             new SuaSoLuongSPGioHangFrame(soLuong, idSP, idKH).setVisible(true);
-            this.dispose();
         }
+        fillToCart();
 
     }//GEN-LAST:event_btnSuaActionPerformed
 
@@ -491,7 +472,6 @@ public class GioHangJDialog extends javax.swing.JFrame {
     private javax.swing.JButton btnDatHang;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnXoaSP;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -501,11 +481,10 @@ public class GioHangJDialog extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSpinner spnSoLuong;
     private javax.swing.JTable tblCart;
     private javax.swing.JTable tblSanPham;
-    private javax.swing.JTextField txtSoluong;
     private javax.swing.JTextField txtTimKiem;
-    private javax.swing.JLabel txtTongTien;
     // End of variables declaration//GEN-END:variables
 
 }

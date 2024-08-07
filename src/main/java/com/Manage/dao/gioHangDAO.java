@@ -1,7 +1,6 @@
 package com.Manage.dao;
 
 import com.Manage.entity.GioHang;
-import com.Manage.entity.SanPham;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ public class GioHangDAO extends HomeDAO<GioHang, String> {
     String INSERT_SQL = "INSERT INTO GioHang(idsp, idkh, SoLuong) values (?,?,?) ";
     String SELECT_ONE_SQL = "SELECT * FROM GioHang WHERE Idsp = ? AND IdKH = ?";
     String UPDATE_SQL = "UPDATE GioHang set SoLuong = ? where Idsp = ? AND IdKH = ?";
-    String SELECT_ALL_BY_IDKH = "SELECT gh.IdSP, sp.TenSP, gh.SoLuong FROM GioHang gh LEFT JOIN SanPham sp ON gh.IdSP = sp.IdSP WHERE IdKH = ?";
+    String SELECT_ALL_BY_IDKH = "SELECT gh.IdSP, sp.TenSP, sp.GiaBan, gh.SoLuong FROM GioHang gh LEFT JOIN SanPham sp ON gh.IdSP = sp.IdSP WHERE IdKH = ?";
     String CHECK_EXIST_SQL = "SELECT COUNT (*) as dem FROM GioHang WHERE Idsp = ? AND IdKH = ?";
     String DELETE_SQL = "DELETE GioHang WHERE IdSP = ? and IdKH = ?";
 
@@ -45,9 +44,11 @@ public class GioHangDAO extends HomeDAO<GioHang, String> {
                 while (rs.next()) {
                     GioHang gioHang = new GioHang();
                     gioHang.setIdSP(rs.getString("idSP"));
-//                    gioHang.setIdKH(rs.getInt("idKH"));
-                    gioHang.setSoLuong(rs.getInt("soLuong"));
+                    //gioHang.setIdKH(rs.getInt("idKH"));
                     gioHang.setTenSP(rs.getString("TenSP"));
+                    gioHang.setGiaBan(rs.getDouble("GiaBan"));
+                    gioHang.setSoLuong(rs.getInt("soLuong"));
+                    
                     list.add(gioHang);
                 }
 

@@ -23,6 +23,7 @@ public class SuaSoLuongSPGioHangFrame extends javax.swing.JFrame {
 
     public SuaSoLuongSPGioHangFrame(int soLuong, String idSP, int idKH) {
         initComponents();
+        setLocationRelativeTo(null);
         this.soLuong = soLuong;
         this.idSP = idSP;
         this.idKH = idKH;
@@ -115,7 +116,7 @@ public class SuaSoLuongSPGioHangFrame extends javax.swing.JFrame {
         gioHang.setIdKH(this.idKH);
         gioHangDAO.update(gioHang);
         this.dispose();
-        new GioHangJDialog().setVisible(true);
+//        new GioHangJDialog().setVisible(true);
     }//GEN-LAST:event_btnOkActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed

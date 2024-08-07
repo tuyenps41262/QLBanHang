@@ -1,26 +1,29 @@
-
 package com.Manage.entity;
 
 import com.Manage.utils.XDate;
+import java.sql.Date;
 
 public class HoaDon {
+
     private String idHD;
-    private String dienThoai;
+    private String soDienThoai;
     private String trangThaiThanhToan;
-    private XDate ngayLap;
+    private Date ngayLap;
     private String diaChi;
+    private String tenNguoiNhan;
     private int idNV;
     private int idKH;
 
     public HoaDon() {
     }
 
-    public HoaDon(String idHD, String dienThoai, String trangThaiThanhToan, XDate ngayLap, String diaChi, int idNV, int idKH) {
+    public HoaDon(String idHD, String soDienThoai, String trangThaiThanhToan, Date ngayLap, String diaChi, String tenNguoiNhan, int idNV, int idKH) {
         this.idHD = idHD;
-        this.dienThoai = dienThoai;
+        this.soDienThoai = soDienThoai;
         this.trangThaiThanhToan = trangThaiThanhToan;
         this.ngayLap = ngayLap;
         this.diaChi = diaChi;
+        this.tenNguoiNhan = tenNguoiNhan;
         this.idNV = idNV;
         this.idKH = idKH;
     }
@@ -33,12 +36,12 @@ public class HoaDon {
         this.idHD = idHD;
     }
 
-    public String getDienThoai() {
-        return dienThoai;
+    public String getSoDienThoai() {
+        return soDienThoai;
     }
 
-    public void setDienThoai(String dienThoai) {
-        this.dienThoai = dienThoai;
+    public void setSoDienThoai(String soDienThoai) {
+        this.soDienThoai = soDienThoai;
     }
 
     public String getTrangThaiThanhToan() {
@@ -49,11 +52,11 @@ public class HoaDon {
         this.trangThaiThanhToan = trangThaiThanhToan;
     }
 
-    public XDate getNgayLap() {
+    public Date getNgayLap() {
         return ngayLap;
     }
 
-    public void setNgayLap(XDate ngayLap) {
+    public void setNgayLap(Date ngayLap) {
         this.ngayLap = ngayLap;
     }
 
@@ -63,6 +66,14 @@ public class HoaDon {
 
     public void setDiaChi(String diaChi) {
         this.diaChi = diaChi;
+    }
+
+    public String getTenNguoiNhan() {
+        return tenNguoiNhan;
+    }
+
+    public void setTenNguoiNhan(String tenNguoiNhan) {
+        this.tenNguoiNhan = tenNguoiNhan;
     }
 
     public int getIdNV() {

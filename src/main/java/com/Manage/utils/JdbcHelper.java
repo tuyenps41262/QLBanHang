@@ -1,4 +1,3 @@
-
 package com.Manage.utils;
 
 import java.sql.Connection;
@@ -8,17 +7,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class JdbcHelper {
-    private static String driver="com.microsoft.sqlserver.jdbc.SQLServerDriver";
+
+    private static String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     private static String url = "jdbc:sqlserver://localhost:1433;databaseName=QLBanHang_DUAN1;encrypt=true;trustServerCertificate=true;";
     private static String username = "sa";
-    private static String password = "2009";
-    static{
-        try{
-            Class.forName(driver);       
-        }catch(ClassNotFoundException ex){
+    private static String password = "123456";
+
+    static {
+        try {
+            Class.forName(driver);
+        } catch (ClassNotFoundException ex) {
             throw new RuntimeException(ex);
         }
     }
+
     public static PreparedStatement getStmt(String sql, Object... args) throws SQLException{
         Connection connection = DriverManager.getConnection(url, username, password);
         PreparedStatement pstmt = null;
@@ -32,20 +34,51 @@ public class JdbcHelper {
         }
         return pstmt;
     }
-    public static int update(String sql, Object...args){
-        try{
+    
+    public static PreparedStatement getStmtReturnGeneratedId(String sql, Object... args) throws SQLException {
+        Connection connection = DriverManager.getConnection(url, username, password);
+        PreparedStatement pstmt = null;
+        pstmt = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);//SQL
+        for (int i = 0; i < args.length; i++) {
+            pstmt.setObject(i + 1, args[i]);
+        }
+        return pstmt;
+    }
+
+    public static int update(String sql, Object... args) {
+        try {
             PreparedStatement pstmt = getStmt(sql, args);
-            try{
+            try {
                 return pstmt.executeUpdate();
-            }
-            finally{
+            } finally {
                 pstmt.getConnection().close();
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-    public static ResultSet query(String sql, Object...args){
+
+    public static int updateReturnGeneratedId(String sql, Object... args) {
+        try {
+            PreparedStatement pstmt = getStmtReturnGeneratedId(sql, args);
+            try {
+                pstmt.executeUpdate();
+                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        return generatedKeys.getInt(1);
+                    } else {
+                        throw new SQLException("Insert fail!!");
+                    }
+                }
+            } finally {
+                pstmt.getConnection().close();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static ResultSet query(String sql, Object... args) {
         try {
             PreparedStatement pstmt = getStmt(sql, args);
             return pstmt.executeQuery();
@@ -53,14 +86,15 @@ public class JdbcHelper {
             throw new RuntimeException(e);
         }
     }
-    public static Object value(String sql, Object...args){
-        try{
+
+    public static Object value(String sql, Object... args) {
+        try {
             ResultSet rs = query(sql, args);
-            if(rs.next()){
+            if (rs.next()) {
                 return rs.getObject(0);
             }
             rs.getStatement().getConnection().close();
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return null;
@@ -81,5 +115,4 @@ public class JdbcHelper {
 //    public static Connection getConnection() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 //    }
-    
 }
